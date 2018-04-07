@@ -110,7 +110,7 @@ Library ppx_deriving_rpc
   Path: ppx
   Findlibname: ppx_deriving_rpc
   Modules: Ppx_deriving_rpc, Ppx_deriving_rpcty
-  BuildDepends: compiler-libs.common, ppx_tools.metaquot, ppx_deriving, ppx_deriving.api
+  BuildDepends: ppx_tools.metaquot, ppx_deriving.api
 
 Library rpc_client_js
   Build$: flag(js)

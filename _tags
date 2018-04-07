@@ -14,3 +14,4 @@
 <lib/*>: cppo_n
 <lib/rpc.*>: warn(-30)
 <true>: thread, safe_string
+<ppx/.{cma,cmxa}>: linkall

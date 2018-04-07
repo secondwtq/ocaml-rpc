@@ -1,11 +1,13 @@
 description = "[@@deriving rpc]"
+requires(ppx_driver) = "ppx_deriving.api"
+# The following part affects ppx driver compilation.
+archive(ppx_driver, byte) = "ppx_deriving_rpc.cma"
+archive(ppx_driver, native) = "ppx_deriving_rpc.cmxa"
+plugin(ppx_driver,byte) = "ppx_deriving_rpc.cma"
+plugin(ppx_driver,native) = "ppx_deriving_rpc.cmxs"
 exists_if = "ppx_deriving_rpc.cma"
 # The following part affects batch compilation and toplevel.
 # The plugin package may require any runtime component it needs.
-requires(-ppx_driver) = "ppx_deriving rpclib"
+requires(-ppx_driver) = "ppx_deriving.runtime rpclib"
+requires(-ppx_driver,-custom_ppx) += "ppx_deriving"
 ppxopt(-ppx_driver) = "ppx_deriving,./ppx_deriving_rpc.cma"
-# The following part affects ppx driver compilation.
-requires(ppx_driver) = "ppx_deriving.api"
-archive(ppx_driver, byte) = "ppx_deriving_rpc.cma"
-archive(ppx_driver, native) = "ppx_deriving_rpc.cmxa"
-
