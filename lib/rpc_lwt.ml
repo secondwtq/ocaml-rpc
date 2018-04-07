@@ -37,13 +37,12 @@ module GenClient () = struct
 
   let declare name _ ty (rpc : rpcfn) =
     let open Result in
-    let rec inner : type b. (string * Rpc.t) list -> b fn -> b = fun cur ->
+    let rec inner : type b. Rpc.t list -> b fn -> b = fun cur ->
       function
       | Function (t, f) ->
-        let n = match t.Param.name with Some s -> s | None -> raise (MarshalError "Named parameters required for Lwt") in
-        fun v -> inner ((n, Rpcmarshal.marshal t.Param.typedef.Rpc.Types.ty v) :: cur) f
+        fun v -> inner ((Rpcmarshal.marshal t.Param.typedef.Rpc.Types.ty v) :: cur) f
       | Returning (t, e) ->
-        let call = Rpc.call name [(Rpc.Dict cur)] in
+        let call = Rpc.call name cur in
         let res = Lwt.bind (rpc call) (fun r ->
           if r.Rpc.success
           then match Rpcmarshal.unmarshal t.Param.typedef.Rpc.Types.ty r.Rpc.contents with Ok x -> Lwt.return (Ok x) | Error (`Msg x) -> Lwt.fail (MarshalError x)
